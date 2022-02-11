@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/mte_bl_items_background_type1">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="?android:attr/selectableItemBackground"
+
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            >
+            <!-- ============================================= -->
+            <!--IMAGE-->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:id="@+id/dev_img"
+                android:src="@drawable/img_pd210"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            >
+            <!-- ============================================= -->
+            <!--Name-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:gravity="left"
+                android:id="@+id/dev_name"
+                android:text="PD-210"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:textColor="#202020"
+                />
+
+
+
+
+
+            <!-- ============================================= -->
+            <!--Address-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:id="@+id/dev_address"
+                android:text="23:23:23:15:45"
+                android:textStyle="bold"
+                android:textSize="10dp"
+                android:textColor="#323232"
+                />
+
+
+        </LinearLayout>
+
+
+
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>
