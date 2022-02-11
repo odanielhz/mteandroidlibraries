@@ -1,5 +1,6 @@
 package com.mte.libraries;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -15,4 +16,14 @@ public class MainActivity extends AppCompatActivity {
 
         MTEDebugLogger.Log(true,"MTE-LOG", "Aplicacion Inicializada");
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }
+
+
+
