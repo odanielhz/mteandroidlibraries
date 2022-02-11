@@ -60,15 +60,46 @@ public class PD210SmartDeviceBluetoothSerialSocket implements Runnable
     String getName()
     {
 
-        return device.getName() != null ? device.getName() : device.getAddress();
+
+        if(ContextCompat.checkSelfPermission(this.context,Manifest.permission.BLUETOOTH ) == PackageManager.PERMISSION_GRANTED) {
+
+            if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                    return device.getName() != null ? device.getName() : device.getAddress();
+                }
+            }
+        }
+
+
+            return "Permission Not Granted";
+
+
     }
     //#############################################################################################################
     //#############################################################################################################
-    boolean checkForPermissions()
+    public boolean checkforpermission()
     {
+        try
+        {
+            boolean response = false;
+
+            if(ContextCompat.checkSelfPermission(this.context,Manifest.permission.BLUETOOTH ) == PackageManager.PERMISSION_GRANTED) {
+
+                if(ContextCompat.checkSelfPermission(this.context,Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
+                    if(ContextCompat.checkSelfPermission(this.context,Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
+                        response = true;
+                    }
+                }
+            }
+            return  response;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
 
     }
-
 
     //#############################################################################################################
     //#############################################################################################################
@@ -136,74 +167,105 @@ public class PD210SmartDeviceBluetoothSerialSocket implements Runnable
     //#############################################################################################################
     //#############################################################################################################
     @Override
-    public void run() {
-        try {
-            socket = device.createRfcommSocketToServiceRecord(BLUETOOTH_SPP);
-            socket.connect();
-            if(listener != null)
-                listener.onSerialConnect();
-        } catch (Exception e) {
-            if(listener != null)
-                listener.onSerialConnectError(e);
-            try {
-                socket.close();
-            } catch (Exception ignored) {
-            }
-            socket = null;
-            return;
-        }
-        connected = true;
-        try {
-            byte[] buffer = new byte[1024];
-            int len;
-            //noinspection InfiniteLoopStatement
-            while (true)
-            {
-                if(ReadEnable)
-                {
-                    if(WaitForExpected)
-                    {
-                        len = socket.getInputStream().read(buffer,ExpectedBytesActuallyRead,ResponseExpectedBytesLen);
-                        if(len == ResponseExpectedBytesLen)
-                        {
-                            // MTEDebugLogger.Log(true,"MTE-SRV:","Complete packet");
-                            //it read everything
-                            byte[] data = Arrays.copyOf(buffer, ExpectedBytesActuallyRead+len);
+    public void run()
+    {
+
+        try
+        {
+            if(ContextCompat.checkSelfPermission(this.context,Manifest.permission.BLUETOOTH ) == PackageManager.PERMISSION_GRANTED) {
+
+                if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+
+                        //===============================================================================================
+
+
+                        try {
+
+                            socket = device.createRfcommSocketToServiceRecord(BLUETOOTH_SPP);
+                            socket.connect();
                             if(listener != null)
-                                listener.onSerialRead(data);
-                            ReadEnable =false;
-                        }
-                        else
-                        {//MTEDebugLogger.Log(true,"MTE-SRV:","Incomplete packet " + len);
-                            ExpectedBytesActuallyRead = len;
-                            ResponseExpectedBytesLen-= len;
-                        }
-                    }
-                    else {
-                        //normal read
-                        len = socket.getInputStream().read(buffer);
-                        byte[] data = Arrays.copyOf(buffer, len);
-                        if(listener != null)
-                            listener.onSerialRead(data);
-                    }
+                                listener.onSerialConnect();
 
 
+
+
+                        } catch (Exception e) {
+                            if(listener != null)
+                                listener.onSerialConnectError(e);
+                            try {
+                                socket.close();
+                            } catch (Exception ignored) {
+                            }
+                            socket = null;
+                            return;
+                        }
+                        connected = true;
+                        try {
+                            byte[] buffer = new byte[1024];
+                            int len;
+                            //noinspection InfiniteLoopStatement
+                            while (true)
+                            {
+                                if(ReadEnable)
+                                {
+                                    if(WaitForExpected)
+                                    {
+                                        len = socket.getInputStream().read(buffer,ExpectedBytesActuallyRead,ResponseExpectedBytesLen);
+                                        if(len == ResponseExpectedBytesLen)
+                                        {
+                                            // MTEDebugLogger.Log(true,"MTE-SRV:","Complete packet");
+                                            //it read everything
+                                            byte[] data = Arrays.copyOf(buffer, ExpectedBytesActuallyRead+len);
+                                            if(listener != null)
+                                                listener.onSerialRead(data);
+                                            ReadEnable =false;
+                                        }
+                                        else
+                                        {//MTEDebugLogger.Log(true,"MTE-SRV:","Incomplete packet " + len);
+                                            ExpectedBytesActuallyRead = len;
+                                            ResponseExpectedBytesLen-= len;
+                                        }
+                                    }
+                                    else {
+                                        //normal read
+                                        len = socket.getInputStream().read(buffer);
+                                        byte[] data = Arrays.copyOf(buffer, len);
+                                        if(listener != null)
+                                            listener.onSerialRead(data);
+                                    }
+
+
+                                }
+                                //len = socket.getInputStream().read(buffer);
+
+
+
+                            }
+                        } catch (Exception e) {
+                            connected = false;
+                            if (listener != null)
+                                listener.onSerialIoError(e);
+                            try {
+                                socket.close();
+                            } catch (Exception ignored) {
+                            }
+                            socket = null;
+                        }
+
+                        //===============================================================================================
+
+                    }
                 }
-                //len = socket.getInputStream().read(buffer);
-
-
-
             }
-        } catch (Exception e) {
-            connected = false;
-            if (listener != null)
-                listener.onSerialIoError(e);
-            try {
-                socket.close();
-            } catch (Exception ignored) {
-            }
-            socket = null;
+
         }
+        catch(Exception ex)
+        {
+
+        }
+
     }
     //================================================================================
     //================================================================================

@@ -23,18 +23,14 @@ public class ApplicationPermissions
 
     //######################################################################################################################3
     //######################################################################################################################3
-    public static boolean checkForPermission(Context context, String permission, int requestcode)
+    public static boolean checkForPermission(Context context, String permission)
     {
         try
         {
             boolean response = false;
             if (ContextCompat.checkSelfPermission(context,permission ) != PackageManager.PERMISSION_GRANTED )
             {
-                ActivityCompat.requestPermissions(
-                        (Activity) context,
-                        new String [] { permission },
-                        requestcode
-                );
+                response = false;
             }
             else
             {
@@ -45,7 +41,31 @@ public class ApplicationPermissions
         }
         catch(Exception ex)
         {
-            MTEDebugLogger.Log(true,"MTE-SECURITY","Exception on checkForPermission()");
+            //MTEDebugLogger.Log(true,"MTE-SECURITY","Exception on checkForPermission()");
+            return false;
+        }
+    }
+    //######################################################################################################################3
+    //######################################################################################################################3
+    public static boolean checkForPermission(Context context, String permission, int requestcode)
+    {
+        try
+        {
+            boolean response = false;
+            if (ContextCompat.checkSelfPermission(context,permission ) != PackageManager.PERMISSION_GRANTED )
+            {
+                response = false;
+            }
+            else
+            {
+                response = true;
+            }
+
+            return response;
+        }
+        catch(Exception ex)
+        {
+            //MTEDebugLogger.Log(true,"MTE-SECURITY","Exception on checkForPermission()");
             return false;
         }
     }
