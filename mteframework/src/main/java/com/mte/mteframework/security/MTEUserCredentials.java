@@ -5,6 +5,7 @@ public class MTEUserCredentials
     public String Email;
     public String Username;
     public String Name;
+    public String LastName;
     public String Password;
     public boolean LoggedIn;
     public boolean IsNewUser;
@@ -25,6 +26,7 @@ public class MTEUserCredentials
         this.UserId = -1;
         this.ObjectId="";
         this.Name = "Undefined";
+        this.LastName = "Undefined";
     }
     //====================================================================
     //====================================================================
