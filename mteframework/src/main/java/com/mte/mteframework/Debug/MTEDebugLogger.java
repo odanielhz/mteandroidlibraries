@@ -1,7 +1,9 @@
 package com.mte.mteframework.Debug;
 
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 public class MTEDebugLogger
 {
@@ -64,4 +66,15 @@ public class MTEDebugLogger
         }
     }
     //=================================================================================
+    //=================================================================================
+    public static void Toast(Context mcontext, String message)
+    {
+        Toast.makeText(mcontext, message, Toast.LENGTH_SHORT).show();
+    }
+
+    //=================================================================================
+    //=================================================================================
+
+
+
 }
