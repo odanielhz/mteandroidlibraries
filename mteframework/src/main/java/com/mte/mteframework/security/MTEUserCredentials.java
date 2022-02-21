@@ -11,6 +11,7 @@ public class MTEUserCredentials
     public boolean IsNewUser;
     public int UserId;
     public String ObjectId;
+    public int AccountType;
 
 
 
@@ -27,6 +28,7 @@ public class MTEUserCredentials
         this.ObjectId="";
         this.Name = "Undefined";
         this.LastName = "Undefined";
+        this.AccountType = 0;
     }
     //====================================================================
     //====================================================================
