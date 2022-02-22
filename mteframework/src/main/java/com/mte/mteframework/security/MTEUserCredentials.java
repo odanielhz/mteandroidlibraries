@@ -1,6 +1,9 @@
 package com.mte.mteframework.security;
 
-public class MTEUserCredentials
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class MTEUserCredentials implements Parcelable
 {
     public String Email;
     public String Username;
@@ -56,6 +59,32 @@ public class MTEUserCredentials
         this.Name = name;
 
     }
+
+    protected MTEUserCredentials(Parcel in) {
+        Email = in.readString();
+        Username = in.readString();
+        Name = in.readString();
+        LastName = in.readString();
+        Password = in.readString();
+        LoggedIn = in.readByte() != 0;
+        IsNewUser = in.readByte() != 0;
+        UserId = in.readInt();
+        ObjectId = in.readString();
+        AccountType = in.readInt();
+    }
+
+    public static final Creator<MTEUserCredentials> CREATOR = new Creator<MTEUserCredentials>() {
+        @Override
+        public MTEUserCredentials createFromParcel(Parcel in) {
+            return new MTEUserCredentials(in);
+        }
+
+        @Override
+        public MTEUserCredentials[] newArray(int size) {
+            return new MTEUserCredentials[size];
+        }
+    };
+
     //====================================================================
     //====================================================================
     public void setLoggedIn()
@@ -65,6 +94,25 @@ public class MTEUserCredentials
     public void setLoggedOut()
     {
         this.LoggedIn=false;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(Email);
+        dest.writeString(Username);
+        dest.writeString(Name);
+        dest.writeString(LastName);
+        dest.writeString(Password);
+        dest.writeByte((byte) (LoggedIn ? 1 : 0));
+        dest.writeByte((byte) (IsNewUser ? 1 : 0));
+        dest.writeInt(UserId);
+        dest.writeString(ObjectId);
+        dest.writeInt(AccountType);
     }
     //====================================================================
     //====================================================================
