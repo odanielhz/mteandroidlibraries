@@ -3,5 +3,9 @@
 
     <color name="colorPrimary">#d84315</color>
 
+    <!-- ===========================================================   -->
+    <!-- PD210 Keyboard   -->
+    <color name="key_outline_color">#222A35</color>
+
 
 </resources>
