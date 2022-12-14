@@ -100,9 +100,9 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
         timeoutHandler.setListener(this);
 
         PD210PacketTx =  new PD210PacketHandler();
-        PD210PacketTx.setArgsLen(120);
+        PD210PacketTx.setPacketLen(120);
         PD210PacketRx =  new PD210PacketHandler();
-        PD210PacketRx.setArgsLen(120);
+        PD210PacketRx.setPacketLen(120);
 
     }
     //****************************************************************************
@@ -506,14 +506,14 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                         break;
                     //==============================================================================
                     case 8:  //Data Receivded
-                        PD210PacketRx.Args[PD210PacketRx.RxIndex] = data[x];
+                        PD210PacketRx.PacketData[PD210PacketRx.RxIndex] = data[x];
                         //dataRx[RxIndex] = data[x];
                         //PD210PacketRx.IncrementRxIndex();
                         PD210PacketRx.RxIndex++;
                         if(PD210PacketRx.RxIndex>=PD210PacketRx.RxArgsLen)
                         {
                             //Finished
-                            PD210PacketRx.Args[PD210PacketRx.RxIndex] = 0;
+                            PD210PacketRx.PacketData[PD210PacketRx.RxIndex] = 0;
                             PD210PacketRx.setRxState(9);
                         }
                         break;
@@ -562,7 +562,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                             if(listener!=null)
                             {
                                 //Copy buffer
-                                byte[] datarx = Arrays.copyOf(PD210PacketRx.Args, PD210PacketRx.RxArgsLen);
+                                byte[] datarx = Arrays.copyOf(PD210PacketRx.PacketData, PD210PacketRx.RxArgsLen);
                                 listener.onDataReceived(CurrentTokenId, datarx,PD210PacketRx.RxArgsLen);
                             }
 
@@ -617,27 +617,27 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
 
         PD210PacketTx.Command = command;
         PD210PacketTx.CommandExpected = command;
-        PD210PacketTx.Args[0] = 0x3A;   //Starting char
-        PD210PacketTx.Args[1] = 'P';
-        PD210PacketTx.Args[2] = 'D';
-        PD210PacketTx.Args[3] = (byte)(command & 0xff);   //Command
-        PD210PacketTx.Args[4] = (byte)((index>>8) & 0xff);   //index high
-        PD210PacketTx.Args[5] = (byte)((index) & 0xff);   //index low
-        PD210PacketTx.Args[6] = (byte)(argsLen & 0xff);  //Args len
+        PD210PacketTx.PacketData[0] = 0x3A;   //Starting char
+        PD210PacketTx.PacketData[1] = 'P';
+        PD210PacketTx.PacketData[2] = 'D';
+        PD210PacketTx.PacketData[3] = (byte)(command & 0xff);   //Command
+        PD210PacketTx.PacketData[4] = (byte)((index>>8) & 0xff);   //index high
+        PD210PacketTx.PacketData[5] = (byte)((index) & 0xff);   //index low
+        PD210PacketTx.PacketData[6] = (byte)(argsLen & 0xff);  //Args len
 
         if(args!=null)
         {
             for(int x=0;x<argsLen;x++)
             {
-                PD210PacketTx.Args[7+x] = args[x];
+                PD210PacketTx.PacketData[7+x] = args[x];
             }
         }
 
-        PD210PacketTx.Args[7+argsLen] = 0x00;   //CRC Hight
-        PD210PacketTx.Args[8+argsLen] = 0x00;   //CRC Low
-        PD210PacketTx.Args[9+argsLen] = 0x3B;   //End char
-        PD210PacketTx.Args[10+argsLen] = 0x0d;  //
-        PD210PacketTx.Args[11+argsLen] = 0x0a;
+        PD210PacketTx.PacketData[7+argsLen] = 0x00;   //CRC Hight
+        PD210PacketTx.PacketData[8+argsLen] = 0x00;   //CRC Low
+        PD210PacketTx.PacketData[9+argsLen] = 0x3B;   //End char
+        PD210PacketTx.PacketData[10+argsLen] = 0x0d;  //
+        PD210PacketTx.PacketData[11+argsLen] = 0x0a;
 
         return (12+argsLen);
     }
@@ -652,7 +652,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                 CurrentTokenId = tokenId;
                 //Set the packet to get th weight string
                 packetlen = setPacket(com.mte.mteframework.Devices.pd210.bluetooth.PD210SmartDeviceConstants.IOT_COMMAND_GET_WEIGHT_STRING, 0, 0, null);
-                service.write(PD210PacketTx.Args, packetlen);
+                service.write(PD210PacketTx.PacketData, packetlen);
                 //SetLog("getWeightString  Packet Sent");
                 //set timeout
                 timeoutHandler.set(1000);
@@ -684,7 +684,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                 CurrentTokenId = tokenId;
                 //Set the packet to get th weight string
                 packetlen = setPacket(com.mte.mteframework.Devices.pd210.bluetooth.PD210SmartDeviceConstants.IOT_COMMAND_GET_DISPLAY_STRING, 0, 0, null);
-                service.write(PD210PacketTx.Args, packetlen);
+                service.write(PD210PacketTx.PacketData, packetlen);
                 //SetLog("getWeightString  Packet Sent");
                 //set timeout
                 timeoutHandler.set(1000);
@@ -716,7 +716,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                 CurrentTokenId = tokenId;
                 //Set the packet to get th weight string
                 packetlen = setPacket(com.mte.mteframework.Devices.pd210.bluetooth.PD210SmartDeviceConstants.IOT_COMMAND_GET_WEIGHT_STRUCTURED_DATA, 0, 0, null);
-                service.write(PD210PacketTx.Args, packetlen);
+                service.write(PD210PacketTx.PacketData, packetlen);
                 //SetLog("getWeightStructure  Packet Sent");
                 //set timeout
                 timeoutHandler.set(5000);
@@ -748,7 +748,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                 CurrentTokenId = tokenId;
                 //Set the packet to get th weight string
                 packetlen = setPacket(com.mte.mteframework.Devices.pd210.bluetooth.PD210SmartDeviceConstants.IOT_COMMAND_SET_KEYBOARD_KEY, 1, 0, new byte[]{keypadval});
-                service.write(PD210PacketTx.Args, packetlen);
+                service.write(PD210PacketTx.PacketData, packetlen);
                 //SetLog("getWeightStructure  Packet Sent");
                 //set timeout
                 timeoutHandler.set(5000);
@@ -783,7 +783,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                 CurrentTokenId = tokenId;
                 //Set the packet to get th weight string
                 packetlen = setPacket(com.mte.mteframework.Devices.pd210.bluetooth.PD210SmartDeviceConstants.IOT_COMMAND_PRINT_TICKET_DATA, 0, 0, null);
-                service.write(PD210PacketTx.Args, packetlen);
+                service.write(PD210PacketTx.PacketData, packetlen);
                 //SetLog("getWeightStructure  Packet Sent");
                 //set timeout
                 timeoutHandler.set(5000);

@@ -2,8 +2,12 @@ package com.mte.mteframework.Devices.pd210;
 
 public class PD210PacketHandler
 {
+
+    public static final int COMMAND_VERSION_BLUETOOTH_1     =0;
+
+
     public int RxState = 0;
-    public byte[] Args;
+    public byte[] PacketData;
     public int RxIndex=0;
     public int Command=0;
     public int CommandExpected =0;
@@ -11,12 +15,16 @@ public class PD210PacketHandler
     public int Response=0;
     public int Index=0;
     public int Counter=0;
+    public int CommandVersion=0;
+
 
 
 
     //================================================================================================
     //Constant
-    public static final byte PD210_COMMAND_GET_NET_WEIGHT_STRING     =               0x01;
+    public static final byte PD210_COMMAND_GET_NET_WEIGHT     =        (byte) 0x01;
+
+    public static final byte PD210_COMMAND_GET_NET_WEIGHT_STRING     = (byte) 0x90;
 
 
 
@@ -62,9 +70,9 @@ public class PD210PacketHandler
         Command = command;
     }
     //***************************************************************************************
-    public void setArgsLen(int len)
+    public void setPacketLen(int len)
     {
-        Args = new byte[len];
+        PacketData = new byte[len];
     }
     //***************************************************************************************
     //***************************************************************************************
@@ -88,15 +96,61 @@ public class PD210PacketHandler
     }
 
 
-
+    //***************************************************************************************
     public int getCounter() {
         return Counter;
     }
-
+    //***************************************************************************************
     public void setCounter(int counter) {
         Counter = counter;
     }
+    //***************************************************************************************
+    public int getCommandVersion() {
+        return CommandVersion;
+    }
+    //***************************************************************************************
+    public void setCommandVersion(int commandVersion) {
+        CommandVersion = commandVersion;
+    }
+    //***************************************************************************************
+    //***************************************************************************************
+    //this function will set the packet according to the format
 
+    public void createPacket(int command, short address, byte argsdata)
+    {
+        switch (CommandVersion)
+        {
+            //====================================================================
+            //====================================================================
+            case COMMAND_VERSION_BLUETOOTH_1:
+                    createBluetooth1Packet(command, address, argsdata);
+                break;
+            //====================================================================
+            //====================================================================
+
+
+            //====================================================================
+            //====================================================================
+
+
+            //====================================================================
+            //====================================================================
+        }
+    }
+    //***************************************************************************************
+    //***************************************************************************************
+    void createBluetooth1Packet(int command, short address, byte argsdata)
+    {
+        try
+        {
+
+
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
 
 
 
