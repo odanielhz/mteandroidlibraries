@@ -7,6 +7,7 @@ public class PD210BluetoothSettings
 {
     public final String PREFS_DEVICE_INFO = "PD210BluetoothDeviceSettings";
     public final String SETTINGS_KEY_TOKEN = "Token";
+    public final int SETTINGS_KEY_TOKEN_VAL = 231047;
     public final String SETTINGS_KEY_DEVICENAME = "DeviceName";
     public final String SETTINGS_KEY_DEVICEADDRESS = "DeviceAddress";
     public final String SETTINGS_KEY_DEVICEIMAGERESOURCE = "DeviceImage";
@@ -40,7 +41,8 @@ public class PD210BluetoothSettings
     {
         SharedPreferences devsetttings = context.getSharedPreferences(PREFS_DEVICE_INFO,0);
 
-        if(devsetttings.getInt(SETTINGS_KEY_TOKEN,0) == 231047) {
+        if(devsetttings.getInt(SETTINGS_KEY_TOKEN,0) == SETTINGS_KEY_TOKEN_VAL)
+        {
             DeviceName = devsetttings.getString(SETTINGS_KEY_DEVICENAME,"UNDEFINED");
             DeviceAddress = devsetttings.getString(SETTINGS_KEY_DEVICEADDRESS,"00:00:00:00");
             DeviceImage = devsetttings.getInt(SETTINGS_KEY_DEVICEIMAGERESOURCE,0);

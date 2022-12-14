@@ -21,7 +21,7 @@ public class MTEDateTime
 
             dt = frmt.parse(datestr);
             if(dt!=null)
-            cal.setTime(dt);
+                cal.setTime(dt);
 
             return cal;
         }catch (Exception ex)
