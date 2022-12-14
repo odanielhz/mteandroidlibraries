@@ -13,9 +13,10 @@ public class PD210BluetoothSettings
     public final String SETTINGS_KEY_DEVICEIMAGERESOURCE = "DeviceImage";
 
 
-    public String DeviceName="";
-    public String DeviceAddress="";
-    public int DeviceImage = -1;
+    private String DeviceName="";
+    private String DeviceAddress="";
+    private int DeviceImage = -1;
+    private boolean DeviceEnabled = false;
 
    /* final String DEVNAME_KEY = "DeviceName";
     final String DEVADDRESS_KEY = "DeviceAddress";
@@ -89,6 +90,8 @@ public class PD210BluetoothSettings
     }
 
 
+
+
     //======================================================================================================
     //======================================================================================================
 
@@ -102,6 +105,14 @@ public class PD210BluetoothSettings
 
     public void setDeviceImage(int deviceImage) {
         DeviceImage = deviceImage;
+    }
+
+    public boolean isDeviceEnabled() {
+        return DeviceEnabled;
+    }
+
+    public void setDeviceEnabled(boolean deviceEnabled) {
+        DeviceEnabled = deviceEnabled;
     }
 
 
