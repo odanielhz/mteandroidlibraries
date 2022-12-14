@@ -10,6 +10,8 @@ public class PD210PacketHandler
     public int RxArgsLen=0;
     public int Response=0;
     public int Index=0;
+    public int Counter=0;
+
 
 
     //================================================================================================
@@ -84,6 +86,18 @@ public class PD210PacketHandler
     {
         RxState = 0;
     }
+
+
+
+    public int getCounter() {
+        return Counter;
+    }
+
+    public void setCounter(int counter) {
+        Counter = counter;
+    }
+
+
 
 
 }
