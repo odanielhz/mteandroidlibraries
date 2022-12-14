@@ -15,30 +15,30 @@
         android:strokeWidth="1.4173"
         android:fillColor="#ED1C24"
         android:fillType="evenOdd"
-        android:strokeColor="@color/key_outline_color"/>
+        android:strokeColor="#202020"/>
   </group>
   <path
       android:pathData="M23.812,2.126c10.537,0 19.133,7.322 19.133,16.299c0,8.976 -8.596,16.298 -19.133,16.298c-10.539,0 -19.135,-7.322 -19.135,-16.298C4.677,9.449 13.272,2.126 23.812,2.126L23.812,2.126z"
       android:strokeWidth="1.4173"
       android:fillColor="#00000000"
       android:fillType="evenOdd"
-      android:strokeColor="@color/key_outline_color"/>
+      android:strokeColor="#202020"/>
 
   <path
       android:pathData="M24.5,18 l+0,+0 l+6,+6 l+6,-6 l-6,-6 z"
-      android:fillColor="@color/key_outline_color"/>
+      android:fillColor="#202020"/>
   <path
       android:pathData="M25.5,18 l+0,+0 l+5,+5 l+5,-5 l-5,-5 z"
       android:fillColor="#FDC010"/>
   <path
-      android:fillColor="@color/key_outline_color"
+      android:fillColor="#202020"
       android:pathData="M29.019,15.955l3.256,0l0,0.832l-1.159,0l0,4.077l-0.939,0l0,-4.077l-1.158,0l0,-0.832z"
       android:fillType="evenOdd"/>
 
 
   <path
       android:pathData="M7.500,13 L7.5,23 L18.5,18.00 z"
-      android:fillColor="@color/key_outline_color"/>
+      android:fillColor="#202020"/>
   <path
       android:pathData="M8.200,14.2 L8.2,21.8 L17.0,18.00 z"
       android:fillColor="#999999"/>

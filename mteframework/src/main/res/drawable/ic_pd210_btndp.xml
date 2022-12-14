@@ -15,14 +15,14 @@
         android:strokeWidth="1.4173"
         android:fillColor="#ED1C24"
         android:fillType="evenOdd"
-        android:strokeColor="@color/key_outline_color"/>
+        android:strokeColor="#202020"/>
   </group>
   <path
       android:pathData="M23.811,2.126c10.538,0 19.133,7.322 19.133,16.299c0,8.976 -8.596,16.298 -19.133,16.298c-10.539,0 -19.134,-7.322 -19.134,-16.298C4.677,9.449 13.272,2.126 23.811,2.126L23.811,2.126z"
       android:strokeWidth="1.4173"
       android:fillColor="#00000000"
       android:fillType="evenOdd"
-      android:strokeColor="@color/key_outline_color"/>
+      android:strokeColor="#202020"/>
   <path
       android:pathData="M7.69,21.899l1.314,-6.868h4.634l-0.155,0.81H9.759l-0.407,2.128h3.224l-0.155,0.811H9.196l-0.597,3.12H7.69z"
       android:fillColor="#E6E7E8"/>
@@ -30,7 +30,7 @@
       android:pathData="M15.854,21.899l0.315,-1.646h-2.979l0.148,-0.772l3.985,-4.45h0.689l-0.852,4.45h0.928l-0.148,0.772h-0.928l-0.315,1.646H15.854zM16.317,19.481l0.593,-3.097l-2.743,3.097H16.317z"
       android:fillColor="#E6E7E8"/>
   <path
-      android:fillColor="@color/key_outline_color"
+      android:fillColor="#202020"
       android:pathData="M30.563,24.169m-1.748,0a1.748,1.748 0,1 1,3.496 0a1.748,1.748 0,1 1,-3.496 0"
       android:fillType="evenOdd"/>
 </vector>

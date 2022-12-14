@@ -8,7 +8,7 @@
       android:strokeWidth="1.4173"
       android:fillColor="#ED1C24"
       android:fillType="evenOdd"
-      android:strokeColor="@color/key_outline_color"/>
+      android:strokeColor="#202020"/>
   <path
       android:pathData="M9.048,22.128v-7.402h1.42l1.688,5.241c0.155,0.488 0.269,0.854 0.34,1.096c0.081,-0.27 0.208,-0.665 0.379,-1.187l1.707,-5.15h1.27v7.402h-0.91v-6.196l-2.071,6.196h-0.851l-2.062,-6.302v6.302H9.048z"
       android:fillColor="#E6E7E8"/>
