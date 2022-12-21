@@ -9,6 +9,8 @@ public class MTEBluetoothCommandHandler
     private int Command;
     private int Sequence;
     private int ResponseExpected;
+    private int AlternateCommand;
+
 
 
 
@@ -86,6 +88,13 @@ public class MTEBluetoothCommandHandler
     }
 //===================================================================
     //===================================================================
+    public int getAlternateCommand() {
+        return AlternateCommand;
+    }
+
+    public void setAlternateCommand(int alternateCommand) {
+        AlternateCommand = alternateCommand;
+    }
 
 
 
