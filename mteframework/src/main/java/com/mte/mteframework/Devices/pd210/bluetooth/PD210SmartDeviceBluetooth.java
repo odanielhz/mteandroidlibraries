@@ -32,6 +32,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
 
 
 
+
     private Connected connected = Connected.False;
 
     public Context mContext;
@@ -60,6 +61,10 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
     public int MonitorStep = 0;
     public int AlternateCommand=0;
     public boolean AlternateCommandBusy =false;
+
+
+
+    int PackeProtocolType = PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_DEFAULT_PROTOCOL;
 
     PD210PacketHandler PD210PacketRx;
     PD210PacketHandler PD210PacketTx;
@@ -104,6 +109,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
         PD210PacketRx =  new PD210PacketHandler();
         PD210PacketRx.setPacketLen(120);
 
+
     }
     //****************************************************************************
     //Constructor
@@ -114,6 +120,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
         DeviceImg = deviceImg;
 
         timeoutHandler.setListener(this);
+
     }
     //****************************************************************************
     //****************************************************************************
@@ -215,13 +222,23 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
     }
     //****************************************************************************
     //****************************************************************************
-
+    //****************************************************************************
+    //****************************************************************************
     public boolean isConnected() {
         if(connected == Connected.True){return true;}
 
         return false;
     }
-
+    //****************************************************************************
+    //****************************************************************************
+    public int getPacketFormatType() {
+        return PackeProtocolType;
+    }
+    //****************************************************************************
+    //****************************************************************************
+    public void setPacketFormatType(int packetFormatType) {
+        PackeProtocolType = packetFormatType;
+    }
     //****************************************************************************
     //****************************************************************************
     //API
@@ -415,9 +432,48 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
         }
 
     }
+
     //****************************************************************************
     //****************************************************************************
     private void receive(byte[] data)
+    {
+        switch (PackeProtocolType)
+        {
+            //============================================================================================
+            //============================================================================================
+            case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_DEFAULT_PROTOCOL:
+                receive_esp32_interfaceprotocol(data);
+                break;
+            //============================================================================================
+            //============================================================================================
+            case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_ESP32_INTERFACE_PROTOCOL:
+                receive_esp32_interfaceprotocol(data);
+                break;
+            //============================================================================================
+            //============================================================================================
+            case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_ESP32_RAW_PROTOCOL:
+                //Send the data to the parent object
+                if(listener!=null)
+                {
+                    listener.onDataReceived(CurrentTokenId, data, data.length);
+                    WaitingResponse = false;
+                    DeviceBusy = false;
+                }
+
+                break;
+            //============================================================================================
+            //============================================================================================
+            case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_ESP32_PROTOCOL:
+
+                break;
+            //============================================================================================
+            //============================================================================================
+        }
+    }
+
+    //****************************************************************************
+    //****************************************************************************
+    private void receive_esp32_interfaceprotocol(byte[] data)
     {
         try
         {
@@ -805,8 +861,42 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
         }
     }
 
-    //****************************************************************************
-    //****************************************************************************
+    //************************************************************************************************************
+    //************************************************************************************************************
+    public void sendRawPacket(int tokenId, byte[] data, int len)
+    {
+        try
+        {
+            int packetlen = 0;
+            if(!DeviceBusy)
+            {
+                CurrentTokenId = tokenId;
+                //Send the raw data
+                service.write(data, len);
+                //set timeout
+                timeoutHandler.set(5000);
+                //set flags
+                WaitingResponse = true;
+                DeviceBusy = true;
+
+            }
+
+
+        }
+        catch(Exception ex)
+        {
+            if(listener!=null)
+            {
+                listener.onDataSentException(tokenId, "sendRawPacket Exception." + ex.toString());
+            }
+        }
+    }
+
+
+    //************************************************************************************************************
+    //************************************************************************************************************
+
+
 
 
 }

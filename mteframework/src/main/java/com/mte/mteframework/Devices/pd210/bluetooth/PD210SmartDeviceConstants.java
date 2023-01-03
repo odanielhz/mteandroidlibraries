@@ -39,5 +39,12 @@ public class PD210SmartDeviceConstants
     public static final byte  MTE_PD210_KEYPAD_KEY_MODE		=			    99;		//0x63
 
 
+    //==============================================================================
+    //DEVICE PROTOCOL TYPE
+    public static final int MTE_PD210_BLUETOOTH_DEFAULT_PROTOCOL            =0;
+    public static final int MTE_PD210_BLUETOOTH_ESP32_PROTOCOL              =1;
+    public static final int MTE_PD210_BLUETOOTH_ESP32_RAW_PROTOCOL          =2;
+    public static final int MTE_PD210_BLUETOOTH_ESP32_INTERFACE_PROTOCOL    =20;
+
 
 }

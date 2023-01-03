@@ -23,7 +23,6 @@ public class PD210PacketHandler
     //================================================================================================
     //Constant
     public static final byte PD210_COMMAND_GET_NET_WEIGHT     =        (byte) 0x01;
-
     public static final byte PD210_COMMAND_GET_NET_WEIGHT_STRING     = (byte) 0x90;
 
 
