@@ -1,6 +1,6 @@
 package com.mte.mteframework.Devices.pd210.bluetooth;
 
-//import com.mte.mteframework.BuildConfig;
+import com.mte.mteframework.BuildConfig;
 
 public class PD210BluetoothConstants
 {
