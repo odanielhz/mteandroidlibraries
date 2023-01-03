@@ -294,6 +294,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
             //Stop service
             SetLog("stoping service");
             context.stopService(new Intent(context, PD210SmartDeviceBluetoothSerialService.class));
+            timeoutHandler.stop();
         }
         catch(Exception ex)
         {
@@ -312,6 +313,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                 SetLog("detaching service");
                 service.detach();
             }
+            timeoutHandler.stop();
         }
         catch (Exception ex)
         {
@@ -349,6 +351,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
         {
             SetLog("onAttach binding service");
             context.bindService(new Intent(context, PD210SmartDeviceBluetoothSerialService.class), this, Context.BIND_AUTO_CREATE);
+            timeoutHandler.stop();
         }
         catch (Exception ex)
         {
