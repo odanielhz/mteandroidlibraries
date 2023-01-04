@@ -450,7 +450,17 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
             //============================================================================================
             //============================================================================================
             case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_ESP32_INTERFACE_PROTOCOL:
-                receive_esp32_protocol(data);
+                //receive_esp32_protocol(data);
+                //WaitingResponse = false;
+                //DeviceBusy = false;
+                if(listener!=null)
+                {
+                    listener.onDataReceived(CurrentTokenId, data, data.length);
+                    WaitingResponse = false;
+                    DeviceBusy = false;
+                }
+
+
                 break;
             //============================================================================================
             //============================================================================================
