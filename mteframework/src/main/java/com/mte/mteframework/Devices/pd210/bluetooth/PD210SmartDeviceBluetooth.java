@@ -746,7 +746,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                         if(data[x] == 0x0a)
                         {
                             //Process Data Completes
-                            SetLog("Packet Received Ok");
+                            //SetLog("Packet Received Ok");
 
                             //ProcessCommandResponse(PD210PacketRx);
                             //================================================================
