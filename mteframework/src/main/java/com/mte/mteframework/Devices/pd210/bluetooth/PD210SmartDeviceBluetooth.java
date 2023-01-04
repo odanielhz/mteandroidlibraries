@@ -706,7 +706,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                         {
                             //Finished
                             PD210PacketRx.PacketData[PD210PacketRx.RxIndex] = 0;
-                            PD210PacketRx.setRxState(9);
+                            PD210PacketRx.setRxState(11);
                         }
                         break;
 
