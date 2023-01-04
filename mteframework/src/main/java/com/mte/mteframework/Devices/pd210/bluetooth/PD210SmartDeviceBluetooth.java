@@ -446,19 +446,16 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
             //============================================================================================
             case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_DEFAULT_PROTOCOL:
                 receive_esp32_interfaceprotocol(data);
+                //WaitingResponse = false;
+                //DeviceBusy = false;
                 break;
             //============================================================================================
             //============================================================================================
             case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_ESP32_INTERFACE_PROTOCOL:
-                //receive_esp32_protocol(data);
+                receive_esp32_interfaceprotocol(data);
+
                 //WaitingResponse = false;
                 //DeviceBusy = false;
-                if(listener!=null)
-                {
-                    listener.onDataReceived(CurrentTokenId, data, data.length);
-                    WaitingResponse = false;
-                    DeviceBusy = false;
-                }
 
 
                 break;
@@ -477,7 +474,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
             //============================================================================================
             //============================================================================================
             case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_ESP32_PROTOCOL:
-
+                    receive_esp32_protocol(data);
                 break;
             //============================================================================================
             //============================================================================================
@@ -696,18 +693,18 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                         {
                             //No args
                             PD210PacketRx.setRxArgsLen((int) data[x]);// = (int)data[x];
-                            PD210PacketRx.setRxState(11);
+                            PD210PacketRx.setRxState(4);
                             PD210PacketRx.setRxIndex(0);
 
                         }
                         else {
                             PD210PacketRx.setRxArgsLen((int) data[x]);// = (int)data[x];
-                            PD210PacketRx.setRxState(8);
+                            PD210PacketRx.setRxState(3);
                             PD210PacketRx.setRxIndex(0);
                         }
                         break;
                     //==============================================================================
-                    case 8:  //Data Receivded
+                    case 3:  //Data Receivded
                         PD210PacketRx.PacketData[PD210PacketRx.RxIndex] = data[x];
                         //dataRx[RxIndex] = data[x];
                         //PD210PacketRx.IncrementRxIndex();
@@ -716,15 +713,15 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                         {
                             //Finished
                             PD210PacketRx.PacketData[PD210PacketRx.RxIndex] = 0;
-                            PD210PacketRx.setRxState(11);
+                            PD210PacketRx.setRxState(4);
                         }
                         break;
 
                     //==============================================================================
-                    case 11:  //End Char
+                    case 4:  //End Char
                         if(data[x] == 0x3E)
                         {
-                            PD210PacketRx.setRxState(12);
+                            PD210PacketRx.setRxState(5);
                         }
                         else
                         {
@@ -733,10 +730,10 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                         }
                         break;
                     //==============================================================================
-                    case 12:  //0x0d
+                    case 5:  //0x0d
                         if(data[x] == 0x0d)
                         {
-                            PD210PacketRx.setRxState(13);
+                            PD210PacketRx.setRxState(6);
                         }
                         else
                         {
@@ -745,7 +742,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                         }
                         break;
                     //==============================================================================
-                    case 13:  //x0a
+                    case 6:  //x0a
                         if(data[x] == 0x0a)
                         {
                             //Process Data Completes
@@ -1074,6 +1071,8 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
             //update packet length
             PD210PacketTx.PacketLength = 6+argslen;
 
+
+
             response= true;
 
             return response;
@@ -1101,8 +1100,10 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                 //===========================================================================
                 //===========================================================================
                 case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_ESP32_PROTOCOL:
-                case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_ESP32_RAW_PROTOCOL:
                     response =setpacketesp32(command, args,argsLen);
+                    break;
+                case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_ESP32_RAW_PROTOCOL:
+                    response = true;
                     break;
                 //===========================================================================
                 //===========================================================================
