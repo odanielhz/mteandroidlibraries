@@ -450,7 +450,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
             //============================================================================================
             //============================================================================================
             case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_ESP32_INTERFACE_PROTOCOL:
-                receive_esp32_interfaceprotocol(data);
+                receive_esp32_protocol(data);
                 break;
             //============================================================================================
             //============================================================================================
@@ -645,6 +645,144 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
         catch(Exception ex)
         {
 
+        }
+    }
+    //****************************************************************************
+    //****************************************************************************
+    private void receive_esp32_protocol(byte[] data)
+    {
+        try
+        {
+
+
+            for(int x=0;x<data.length;x++)
+            {
+                //==============================================================================
+                //==============================================================================
+                switch(PD210PacketRx.getRxState())
+                {
+                    //==============================================================================
+                    case 0:
+                        if(data[x] == 0x3C)
+                        {
+                            PD210PacketRx.setRxState(1);
+                        }
+                        break;
+                    //==============================================================================
+                    case 1:
+                        if(data[x] == PD210PacketTx.CommandExpected)
+                        {
+                            PD210PacketRx.setRxState(2);
+                        }
+                        else
+                        {
+                            PD210PacketRx.setRxState(0);
+                            //CurrentCommandHandler.setState(MTEBluetoothCommandHandler.ProcessState.Completed);
+                        }
+                        break;
+                    //==============================================================================
+                    case 2: //Args len
+                        if(data[x] == 0)
+                        {
+                            //No args
+                            PD210PacketRx.setRxArgsLen((int) data[x]);// = (int)data[x];
+                            PD210PacketRx.setRxState(11);
+                            PD210PacketRx.setRxIndex(0);
+
+                        }
+                        else {
+                            PD210PacketRx.setRxArgsLen((int) data[x]);// = (int)data[x];
+                            PD210PacketRx.setRxState(8);
+                            PD210PacketRx.setRxIndex(0);
+                        }
+                        break;
+                    //==============================================================================
+                    case 8:  //Data Receivded
+                        PD210PacketRx.PacketData[PD210PacketRx.RxIndex] = data[x];
+                        //dataRx[RxIndex] = data[x];
+                        //PD210PacketRx.IncrementRxIndex();
+                        PD210PacketRx.RxIndex++;
+                        if(PD210PacketRx.RxIndex>=PD210PacketRx.RxArgsLen)
+                        {
+                            //Finished
+                            PD210PacketRx.PacketData[PD210PacketRx.RxIndex] = 0;
+                            PD210PacketRx.setRxState(9);
+                        }
+                        break;
+
+                    //==============================================================================
+                    case 11:  //End Char
+                        if(data[x] == 0x3E)
+                        {
+                            PD210PacketRx.setRxState(12);
+                        }
+                        else
+                        {
+                            PD210PacketRx.setRxState(0);
+                            //CurrentCommandHandler.setState(MTEBluetoothCommandHandler.ProcessState.Completed);
+                        }
+                        break;
+                    //==============================================================================
+                    case 12:  //0x0d
+                        if(data[x] == 0x0d)
+                        {
+                            PD210PacketRx.setRxState(13);
+                        }
+                        else
+                        {
+                            PD210PacketRx.setRxState(0);
+                            //CurrentCommandHandler.setState(MTEBluetoothCommandHandler.ProcessState.Completed);
+                        }
+                        break;
+                    //==============================================================================
+                    case 13:  //x0a
+                        if(data[x] == 0x0a)
+                        {
+                            //Process Data Completes
+                            //SetLog("Packet Received Ok");
+
+                            //ProcessCommandResponse(PD210PacketRx);
+                            //================================================================
+                            //Set the datareceived event
+                            if(listener!=null)
+                            {
+                                //Copy buffer
+                                byte[] datarx = Arrays.copyOf(PD210PacketRx.PacketData, PD210PacketRx.RxArgsLen);
+                                listener.onDataReceived(CurrentTokenId, datarx,PD210PacketRx.RxArgsLen);
+                            }
+
+                            timeoutHandler.stop();
+                            DeviceBusy = false;
+                            WaitingResponse = false;
+                            //CurrentCommandHandler.setState(MTEBluetoothCommandHandler.ProcessState.Completed);
+                        }
+
+                        PD210PacketRx.setRxState(0);
+
+                        break;
+                    //==============================================================================
+                    //==============================================================================
+                    default:
+                        timeoutHandler.stop();
+                        DeviceBusy = false;
+                        WaitingResponse = false;
+                        PD210PacketRx.setRxState(0);
+                        x= data.length;  //exit loop
+                        break;
+                }
+                //==============================================================================
+                //==============================================================================
+            }
+
+
+
+        }
+        catch(Exception ex)
+        {
+            timeoutHandler.stop();
+            DeviceBusy = false;
+            WaitingResponse = false;
+            PD210PacketRx.setRxState(0);
         }
     }
     //****************************************************************************
@@ -994,6 +1132,8 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                     CurrentTokenId = tokenid;
                     //Send the raw data
                     service.write(PD210PacketTx.PacketData, PD210PacketTx.PacketLength);
+                    PD210PacketRx.Reset();
+
                     //set timeout
                     timeoutHandler.set(1500);
                     //set flags
@@ -1003,10 +1143,6 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
                     response = true;
                 }
             }
-
-
-
-
 
             return response;
         }
