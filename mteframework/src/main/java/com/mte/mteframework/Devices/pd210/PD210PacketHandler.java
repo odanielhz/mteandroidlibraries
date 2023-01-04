@@ -16,7 +16,7 @@ public class PD210PacketHandler
     public int Index=0;
     public int Counter=0;
     public int CommandVersion=0;
-
+    public int PacketLength = 0;
 
 
 

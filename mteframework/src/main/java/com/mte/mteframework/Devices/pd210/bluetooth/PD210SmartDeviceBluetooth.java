@@ -698,6 +698,8 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
         PD210PacketTx.PacketData[10+argsLen] = 0x0d;  //
         PD210PacketTx.PacketData[11+argsLen] = 0x0a;
 
+        PD210PacketTx.PacketLength = 12+argsLen;
+
         return (12+argsLen);
     }
     //****************************************************************************
@@ -894,7 +896,125 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
             }
         }
     }
+    //************************************************************************************************************
+    //************************************************************************************************************
+    private boolean setpacketesp32(byte command, byte[] args,  byte argslen)
+    {
+        try
+        {
+            boolean response =false;
 
+            PD210PacketTx.Command = command;
+            PD210PacketTx.CommandExpected = command;
+            PD210PacketTx.PacketData[0] = 0x3c;   //Starting char <
+            PD210PacketTx.PacketData[1] = (byte)PD210PacketTx.Command;
+            PD210PacketTx.PacketData[2] = argslen;
+
+            if(args!=null)
+            {
+                for(int x=0;x<argslen;x++)
+                {
+                    PD210PacketTx.PacketData[3+x] = args[x];
+                }
+            }
+
+            //Ending packet
+            PD210PacketTx.PacketData[3+argslen] = 0x3e; //>
+            PD210PacketTx.PacketData[3+argslen +1] = 0x0d;
+            PD210PacketTx.PacketData[3+argslen +2] = 0x0a;
+
+            //update packet length
+            PD210PacketTx.PacketLength = 6+argslen;
+
+            response= true;
+
+            return response;
+        }catch(Exception ex)
+        {
+            return false;
+        }
+    }
+    //************************************************************************************************************
+    //************************************************************************************************************
+    private boolean setPacket(int packetprotocoltype, byte command, int index,byte[] args, byte argsLen)
+    {
+        try
+        {
+            boolean response =false;
+            //===========================================================================
+            //===========================================================================
+            switch (packetprotocoltype)
+            {
+                //===========================================================================
+                case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_DEFAULT_PROTOCOL:
+                    setPacket(command,argsLen,index, args);
+                    response= true;
+                    break;
+                //===========================================================================
+                //===========================================================================
+                case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_ESP32_PROTOCOL:
+                case PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_ESP32_RAW_PROTOCOL:
+                    response =setpacketesp32(command, args,argsLen);
+                    break;
+                //===========================================================================
+                //===========================================================================
+
+
+                //===========================================================================
+                //===========================================================================
+            }
+            //===========================================================================
+            //===========================================================================
+
+            return response;
+        }
+        catch(Exception ex)
+        {
+            return false;
+        }
+
+    }
+
+
+    //************************************************************************************************************
+    //************************************************************************************************************
+    public boolean sendPacket(int tokenid, byte command, int index, byte[] args,  byte argslen)
+    {
+        try
+        {
+            boolean response = false;
+
+            //=======================================================
+            //Lets create the packet
+            if(setPacket(PackeProtocolType, command,index, args, argslen))
+            {
+                //packet was formed successfully
+                if(!DeviceBusy)
+                {
+                    CurrentTokenId = tokenid;
+                    //Send the raw data
+                    service.write(PD210PacketTx.PacketData, PD210PacketTx.PacketLength);
+                    //set timeout
+                    timeoutHandler.set(1500);
+                    //set flags
+                    WaitingResponse = true;
+                    DeviceBusy = true;
+
+                    response = true;
+                }
+            }
+
+
+
+
+
+            return response;
+        }
+        catch(Exception ex)
+        {
+            return false;
+        }
+    }
 
     //************************************************************************************************************
     //************************************************************************************************************
