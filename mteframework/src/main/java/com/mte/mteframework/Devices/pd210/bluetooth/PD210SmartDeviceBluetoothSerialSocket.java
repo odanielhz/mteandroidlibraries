@@ -10,10 +10,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.mte.mteframework.Debug.MTEDebugLogger;
 import com.mte.mteframework.security.ApplicationPermissions;
 
 import java.io.IOException;
@@ -172,98 +174,149 @@ public class PD210SmartDeviceBluetoothSerialSocket implements Runnable
 
         try
         {
-            if(ContextCompat.checkSelfPermission(this.context,Manifest.permission.BLUETOOTH ) == PackageManager.PERMISSION_GRANTED) {
+            String[] PERMISSIONS ;// new String[0];
+            boolean permissionGranted = true;
 
-                if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            //================================================================================
+            //Changes for Android 12
+            //Bluetooth permissions changed
+            //================================================================================================================
+            //================================================================================================================
+            if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.R)
+            {
+                //Version  API 30  and lower
+                PERMISSIONS =new String[]{Manifest.permission.BLUETOOTH,
+                        Manifest.permission.BLUETOOTH_ADMIN,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION};
 
-
-                        //===============================================================================================
-
-
-                        try {
-
-                            socket = device.createRfcommSocketToServiceRecord(BLUETOOTH_SPP);
-                            socket.connect();
-                            if(listener != null)
-                                listener.onSerialConnect();
-
-
-
-
-                        } catch (Exception e) {
-                            if(listener != null)
-                                listener.onSerialConnectError(e);
-                            try {
-                                socket.close();
-                            } catch (Exception ignored) {
-                            }
-                            socket = null;
-                            return;
-                        }
-                        connected = true;
-                        try {
-                            byte[] buffer = new byte[1024];
-                            int len;
-                            //noinspection InfiniteLoopStatement
-                            while (true)
-                            {
-                                if(ReadEnable)
-                                {
-                                    if(WaitForExpected)
-                                    {
-                                        len = socket.getInputStream().read(buffer,ExpectedBytesActuallyRead,ResponseExpectedBytesLen);
-                                        if(len == ResponseExpectedBytesLen)
-                                        {
-                                            // MTEDebugLogger.Log(true,"MTE-SRV:","Complete packet");
-                                            //it read everything
-                                            byte[] data = Arrays.copyOf(buffer, ExpectedBytesActuallyRead+len);
-                                            if(listener != null)
-                                                listener.onSerialRead(data);
-                                            ReadEnable =false;
-                                        }
-                                        else
-                                        {//MTEDebugLogger.Log(true,"MTE-SRV:","Incomplete packet " + len);
-                                            ExpectedBytesActuallyRead = len;
-                                            ResponseExpectedBytesLen-= len;
-                                        }
-                                    }
-                                    else {
-                                        //normal read
-                                        len = socket.getInputStream().read(buffer);
-                                        byte[] data = Arrays.copyOf(buffer, len);
-                                        if(listener != null)
-                                            listener.onSerialRead(data);
-                                    }
-
-
-                                }
-                                //len = socket.getInputStream().read(buffer);
+                //Check permissions
+                for(String permission :PERMISSIONS)
+                {
+                    if(ContextCompat.checkSelfPermission(this.context,permission ) != PackageManager.PERMISSION_GRANTED)
+                    {
+                        permissionGranted = false;
+                    }
+                }
 
 
 
-                            }
-                        } catch (Exception e) {
-                            connected = false;
-                            if (listener != null)
-                                listener.onSerialIoError(e);
-                            try {
-                                socket.close();
-                            } catch (Exception ignored) {
-                            }
-                            socket = null;
-                        }
+            }
+            else
+            {
+                //API 31 -> Android 12
+                //Version API 31 and  Higher
+                PERMISSIONS =new String[]{Manifest.permission.BLUETOOTH_CONNECT,
+                        Manifest.permission.BLUETOOTH_ADVERTISE,
+                        Manifest.permission.BLUETOOTH_SCAN,
+                        Manifest.permission.ACCESS_FINE_LOCATION};
 
-                        //===============================================================================================
-
+                //Check permissions
+                for(String permission :PERMISSIONS)
+                {
+                    if(ContextCompat.checkSelfPermission(this.context,permission ) != PackageManager.PERMISSION_GRANTED)
+                    {
+                        permissionGranted = false;
                     }
                 }
             }
 
+
+            //================================================================================================================
+            //================================================================================================================
+            if(permissionGranted)
+            {
+
+                //===============================================================================================
+
+
+                try {
+
+                    socket = device.createRfcommSocketToServiceRecord(BLUETOOTH_SPP);
+                    socket.connect();
+                    if(listener != null)
+                        listener.onSerialConnect();
+
+
+
+
+                } catch (Exception e) {
+                    if(listener != null)
+                        listener.onSerialConnectError(e);
+                    try {
+                        socket.close();
+                    } catch (Exception ignored) {
+                    }
+                    socket = null;
+                    return;
+                }
+                connected = true;
+                try {
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    //noinspection InfiniteLoopStatement
+                    while (true)
+                    {
+                        if(ReadEnable)
+                        {
+                            if(WaitForExpected)
+                            {
+                                len = socket.getInputStream().read(buffer,ExpectedBytesActuallyRead,ResponseExpectedBytesLen);
+                                if(len == ResponseExpectedBytesLen)
+                                {
+                                    // MTEDebugLogger.Log(true,"MTE-SRV:","Complete packet");
+                                    //it read everything
+                                    byte[] data = Arrays.copyOf(buffer, ExpectedBytesActuallyRead+len);
+                                    if(listener != null)
+                                        listener.onSerialRead(data);
+                                    ReadEnable =false;
+                                }
+                                else
+                                {//MTEDebugLogger.Log(true,"MTE-SRV:","Incomplete packet " + len);
+                                    ExpectedBytesActuallyRead = len;
+                                    ResponseExpectedBytesLen-= len;
+                                }
+                            }
+                            else {
+                                //normal read
+                                len = socket.getInputStream().read(buffer);
+                                byte[] data = Arrays.copyOf(buffer, len);
+                                if(listener != null)
+                                    listener.onSerialRead(data);
+                            }
+
+
+                        }
+                        //len = socket.getInputStream().read(buffer);
+
+
+
+                    }
+                } catch (Exception e) {
+                    connected = false;
+                    if (listener != null)
+                        listener.onSerialIoError(e);
+                    try {
+                        socket.close();
+                    } catch (Exception ignored) {
+                    }
+                    socket = null;
+                }
+
+
+            }
+            else
+            {
+                //Permission not granted
+                MTEDebugLogger.Log(true, "MTE-BTSOCKET", "Permission Denied. Run()");
+            }
+
+
+
         }
         catch(Exception ex)
         {
-
+            MTEDebugLogger.Log(true, "MTE-BTSOCKET", "Exception. Run(). " + ex);
         }
 
     }
