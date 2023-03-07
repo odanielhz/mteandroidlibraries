@@ -62,6 +62,12 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
     public int AlternateCommand=0;
     public boolean AlternateCommandBusy =false;
 
+    //================================
+    //DEvice identification
+    public int  DeviceType=0;
+    public int DeviceHardware=0;
+    public int DeviceSoftwareMajorVersion=0;
+    public int DeviceSoftwareMinorVersion=0;
 
 
     int PackeProtocolType = PD210SmartDeviceConstants.MTE_PD210_BLUETOOTH_DEFAULT_PROTOCOL;
