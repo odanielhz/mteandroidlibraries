@@ -56,6 +56,7 @@ public class MTETimeoutHandler
     {
         //Stop Previous handler
         tmrhandler.removeCallbacksAndMessages(null);
+        Expired=false;
     }
 //################################################################################
     //################################################################################
@@ -69,6 +70,7 @@ public class MTETimeoutHandler
         targetms=timeoutms;
         tmrhandler.postDelayed(timedout, timeoutms);
         Running= true;
+        Expired=false;
     }
 
     //################################################################################
