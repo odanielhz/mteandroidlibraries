@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MTEDebugLogger.Log(true,"MTE-LOG", "Aplicacion Inicializada");
+        MTEDebugLogger.Log(true,"MTE-LOG", "Aplicacion Inicializada this");
     }
 
 
