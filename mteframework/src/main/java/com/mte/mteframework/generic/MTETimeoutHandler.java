@@ -29,6 +29,7 @@ public class MTETimeoutHandler
     //################################################################################
     public MTETimeoutHandler(int timeoutms)
     {
+        Expired = false;
         targetms = timeoutms;
     }
     //################################################################################
