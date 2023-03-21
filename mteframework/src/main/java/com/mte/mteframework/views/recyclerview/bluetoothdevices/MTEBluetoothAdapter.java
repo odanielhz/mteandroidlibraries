@@ -100,13 +100,13 @@ public class MTEBluetoothAdapter extends RecyclerView.Adapter<MTEBluetoothAdapte
         {
             //classsic
             holder.dev_type.setText("Classic Bluetooth");
-            holder.dev_type.setTextColor( 0xAAAAAA);
+            //holder.dev_type.setTextColor( 0xAAAAAA);
         }
         else
         {
             //ble device
             holder.dev_type.setText("BLE");
-            holder.dev_type.setTextColor( 0x07459A);
+            //holder.dev_type.setTextColor( 0x07459A);
         }
 
 
