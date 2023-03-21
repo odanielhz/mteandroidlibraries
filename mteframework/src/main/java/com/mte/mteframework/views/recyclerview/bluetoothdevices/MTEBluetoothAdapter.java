@@ -144,8 +144,8 @@ public class MTEBluetoothAdapter extends RecyclerView.Adapter<MTEBluetoothAdapte
     //***********************************************************************************************
     public class MTEBluetoothViewHolder  extends RecyclerView.ViewHolder
     {
-        ImageView dev_img;
-        TextView dev_name,dev_address, dev_type;
+        public ImageView dev_img;
+        public TextView dev_name,dev_address,dev_type;
 
 
         //=====================================================================

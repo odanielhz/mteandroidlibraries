@@ -5,7 +5,18 @@ import android.bluetooth.BluetoothDevice;
 public class MTEBluetoothDeviceItem
 {
     public enum BluetoothDeviceType
-    {BLUETOOTH_CLASSIC, BLUETOOTH_BLE}
+    {BLUETOOTH_CLASSIC(0),
+        BLUETOOTH_BLE(1);
+        BluetoothDeviceType(int i)
+        {
+            this.type = i;
+        }
+        private int type;
+        public int getNumericType()
+        {
+            return type;
+        }
+    };
     private String Name;
     private String Address;
     private int Image;
