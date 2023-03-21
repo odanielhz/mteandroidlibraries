@@ -3,6 +3,7 @@ package com.mte.mteframework.views.recyclerview.bluetoothdevices;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,13 +101,13 @@ public class MTEBluetoothAdapter extends RecyclerView.Adapter<MTEBluetoothAdapte
         {
             //classsic
             holder.dev_type.setText("Classic Bluetooth");
-            //holder.dev_type.setTextColor( 0xAAAAAA);
+            holder.dev_type.setTextColor(Color.BLACK);
         }
         else
         {
             //ble device
             holder.dev_type.setText("BLE");
-            //holder.dev_type.setTextColor( 0x07459A);
+            holder.dev_type.setTextColor( Color.BLUE);
         }
 
 
