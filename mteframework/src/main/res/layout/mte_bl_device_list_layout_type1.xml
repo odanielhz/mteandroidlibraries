@@ -73,6 +73,18 @@
                 android:textSize="10dp"
                 android:textColor="#323232"
                 />
+            <!-- ============================================= -->
+            <!--Address-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:id="@+id/dev_type"
+                android:text="Classic Bluetooth"
+                android:textStyle="bold"
+                android:textSize="10dp"
+                android:textColor="#323232"
+                />
 
 
         </LinearLayout>

@@ -4,9 +4,13 @@ import android.bluetooth.BluetoothDevice;
 
 public class MTEBluetoothDeviceItem
 {
+    public enum BluetoothDeviceType
+    {BLUETOOTH_CLASSIC, BLUETOOTH_BLE}
     private String Name;
     private String Address;
     private int Image;
+    private BluetoothDeviceType BluetoothType = BluetoothDeviceType.BLUETOOTH_CLASSIC;
+
 
     private BluetoothDevice Device;
 
@@ -64,4 +68,10 @@ public class MTEBluetoothDeviceItem
     public void setDevice(BluetoothDevice device) {
         Device = device;
     }
+    //##############################################################################################################
+
+    public BluetoothDeviceType getBluetoothType(){return BluetoothType;}
+    public void setBluetoothType(BluetoothDeviceType type){BluetoothType = type;}
+    //##############################################################################################################
+
 }

@@ -2,6 +2,7 @@ package com.mte.mteframework.views.recyclerview.bluetoothdevices;
 
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class MTEBluetoothAdapter extends RecyclerView.Adapter<MTEBluetoothAdapte
     private ArrayList<MTEBluetoothDeviceItem> mData;
     private int layoutResource;
     private View.OnClickListener listener;
+    Context mContext;
 
     //***********************************************************************************************
     //***********************************************************************************************
@@ -34,14 +36,37 @@ public class MTEBluetoothAdapter extends RecyclerView.Adapter<MTEBluetoothAdapte
         this.mData = mData;
         this.layoutResource = R.layout.mte_bl_device_list_layout_type1;
     }
-
+    //***********************************************************************************************
+    //***********************************************************************************************
+    public MTEBluetoothAdapter(ArrayList<MTEBluetoothDeviceItem> mData, Context context) {
+        this.mData = mData;
+        this.layoutResource = R.layout.mte_bl_device_list_layout_type1;
+        mContext = context;
+    }
     //***********************************************************************************************
     //***********************************************************************************************
     public MTEBluetoothAdapter(ArrayList<MTEBluetoothDeviceItem> mData, int layoutResource) {
         this.mData = mData;
         this.layoutResource = layoutResource;
     }
-
+    //***********************************************************************************************
+    //***********************************************************************************************
+    public MTEBluetoothAdapter(ArrayList<MTEBluetoothDeviceItem> mData, Context context, int layoutResource) {
+        this.mData = mData;
+        this.layoutResource = layoutResource;
+        mContext = context;
+    }
+    //***********************************************************************************************
+    //***********************************************************************************************
+    public void setContext(Context context)
+    {
+        mContext = context;
+    }
+    //***********************************************************************************************
+    //***********************************************************************************************
+    public Context getContext() {
+        return mContext;
+    }
     //***********************************************************************************************
     //***********************************************************************************************
     @NonNull
@@ -71,6 +96,19 @@ public class MTEBluetoothAdapter extends RecyclerView.Adapter<MTEBluetoothAdapte
         holder.dev_img.setImageResource(mData.get(position).getImage());
         holder.dev_name.setText(mData.get(position).getName());
         holder.dev_address.setText(mData.get(position).getAddress());
+        if(mData.get(position).getBluetoothType() == MTEBluetoothDeviceItem.BluetoothDeviceType.BLUETOOTH_CLASSIC)
+        {
+            //classsic
+            holder.dev_type.setText("Classic Bluetooth");
+            holder.dev_type.setTextColor( 0xAAAAAA);
+        }
+        else
+        {
+            //ble device
+            holder.dev_type.setText("BLE");
+            holder.dev_type.setTextColor( 0x07459A);
+        }
+
 
     }
     //**********************************************************************
@@ -106,7 +144,8 @@ public class MTEBluetoothAdapter extends RecyclerView.Adapter<MTEBluetoothAdapte
     public class MTEBluetoothViewHolder  extends RecyclerView.ViewHolder
     {
         ImageView dev_img;
-        TextView dev_name,dev_address;
+        TextView dev_name,dev_address, dev_type;
+
 
         //=====================================================================
         //=====================================================================
@@ -118,6 +157,7 @@ public class MTEBluetoothAdapter extends RecyclerView.Adapter<MTEBluetoothAdapte
             this.dev_img = itemView.findViewById(R.id.dev_img);
             this.dev_name = itemView.findViewById(R.id.dev_name);
             this.dev_address =  itemView.findViewById(R.id.dev_address);
+            this.dev_type = itemView.findViewById(R.id.dev_type);
 
         }
 

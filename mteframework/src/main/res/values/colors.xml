@@ -3,9 +3,12 @@
 
     <color name="colorPrimary">#d84315</color>
 
+    <color name="dark_blue_color">#07459A</color>
+    <color name="dark_drayText_color">#272727</color>
     <!-- ===========================================================   -->
     <!-- PD210 Keyboard   -->
     <color name="key_outline_color">#222A35</color>
+
 
 
 </resources>
