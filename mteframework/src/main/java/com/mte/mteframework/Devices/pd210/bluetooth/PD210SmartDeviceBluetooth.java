@@ -165,8 +165,12 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
         timeoutHandler.setListener(this);
 
     }
-    //****************************************************************************
-    //****************************************************************************
+    //**********************************************************************************************************
+    //**********************************************************************************************************
+    public MTEBluetoothDeviceItem getBluetoothDeviceItem(){return deviceItem;}
+    public void setBluetoothDeviceItem(MTEBluetoothDeviceItem item){deviceItem = item;}
+    //**********************************************************************************************************
+    //**********************************************************************************************************
     @Override
     public void onServiceConnected(ComponentName name, IBinder binder)
     {
