@@ -13,11 +13,28 @@ import com.mte.mteframework.Debug.MTEDebugLogger;
 import com.mte.mteframework.Devices.pd210.bluetooth.MTEBluetoothCommandHandler;
 import com.mte.mteframework.Devices.pd210.PD210PacketHandler;
 import com.mte.mteframework.generic.MTETimeoutHandler;
+import com.mte.mteframework.views.recyclerview.bluetoothdevices.MTEBluetoothDeviceItem;
 
 import java.util.Arrays;
 
 public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartDeviceBluetoothSerialListener, MTETimeoutHandler.MTETimeoutHandlerListener
 {
+
+
+    public enum BluetoothDeviceType
+    {BLUETOOTH_CLASSIC(0),
+        BLUETOOTH_BLE(1);
+        BluetoothDeviceType(int i)
+        {
+            this.type = i;
+        }
+        private int type;
+        public int getNumericType()
+        {
+            return type;
+        }
+    };
+
 
     private static final String TAG ="MTE-PD210DEV-";
     private static final boolean TAGENABLE = true;
@@ -25,6 +42,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
     public String DeviceName;
     public String DeviceAddress;
     public int DeviceImg;
+    private MTEBluetoothDeviceItem deviceItem;
 
 
 
@@ -115,6 +133,9 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
         PD210PacketRx =  new PD210PacketHandler();
         PD210PacketRx.setPacketLen(120);
 
+        deviceItem = new MTEBluetoothDeviceItem("unknkown","00:00:00:00",0,null);
+        deviceItem.setBluetoothType(BluetoothDeviceType.BLUETOOTH_CLASSIC);
+
 
     }
     //****************************************************************************
@@ -124,6 +145,22 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
         DeviceName = devName;
         DeviceAddress = deviceAddress;
         DeviceImg = deviceImg;
+
+        deviceItem = new MTEBluetoothDeviceItem(devName,deviceAddress,0,null);
+        deviceItem.setBluetoothType(BluetoothDeviceType.BLUETOOTH_CLASSIC);
+
+        timeoutHandler.setListener(this);
+
+    }
+    //****************************************************************************
+    //Constructor
+    public PD210SmartDeviceBluetooth(String devName, String deviceAddress, int deviceImg, MTEBluetoothDeviceItem deviceitem)
+    {
+        DeviceName = devName;
+        DeviceAddress = deviceAddress;
+        DeviceImg = deviceImg;
+
+        deviceItem = deviceitem;
 
         timeoutHandler.setListener(this);
 
@@ -395,7 +432,11 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
             //status("Connecting...", R.color.yellow_warning, R.color.dark_gray_1);
             connected = Connected.Pending;
 
-            PD210SmartDeviceBluetoothSerialSocket socket = new PD210SmartDeviceBluetoothSerialSocket(context.getApplicationContext(), device);
+            //PD210SmartDeviceBluetoothSerialSocket socket = new PD210SmartDeviceBluetoothSerialSocket(context.getApplicationContext(), device);
+
+            PD210SmartDeviceBluetoothSerialSocket socket = new PD210SmartDeviceBluetoothSerialSocket(context.getApplicationContext(), device, deviceItem);
+
+
             service.connect(socket);
 
         }
@@ -417,7 +458,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
             //status("Connecting...", R.color.yellow_warning, R.color.dark_gray_1);
             connected = Connected.Pending;
 
-            PD210SmartDeviceBluetoothSerialSocket socket = new PD210SmartDeviceBluetoothSerialSocket(mContext.getApplicationContext(), device);
+            PD210SmartDeviceBluetoothSerialSocket socket = new PD210SmartDeviceBluetoothSerialSocket(mContext.getApplicationContext(), device, deviceItem);
             service.connect(socket);
 
         }

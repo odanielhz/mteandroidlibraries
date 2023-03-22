@@ -3,5 +3,9 @@
 
     <string name="app_name">SmartConfigTool</string>
 
+    <!-- ============================================================== -->
+    <!-- ===============BLUETOOTH SERIAL SERIVCE======================== -->
+    <string name="pairing_request">Vinculación necesaria. Vincule el dispositivo e intente conectar nuevamente</string>
+    <!-- ============================================================== -->
 
 </resources>

@@ -59,7 +59,7 @@ public class PD210SmartDeviceBluetoothSerialService extends Service implements c
     private final Queue<QueueItem> queue1, queue2;
 
     private PD210SmartDeviceBluetoothSerialSocket socket;
-    private com.mte.mteframework.Devices.pd210.bluetooth.PD210SmartDeviceBluetoothSerialListener listener;
+    private PD210SmartDeviceBluetoothSerialListener listener;
     private boolean connected;
 
 

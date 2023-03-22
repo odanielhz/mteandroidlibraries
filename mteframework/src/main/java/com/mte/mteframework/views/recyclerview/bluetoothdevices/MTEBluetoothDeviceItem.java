@@ -2,25 +2,14 @@ package com.mte.mteframework.views.recyclerview.bluetoothdevices;
 
 import android.bluetooth.BluetoothDevice;
 
+import com.mte.mteframework.Devices.pd210.bluetooth.PD210SmartDeviceBluetooth;
+
 public class MTEBluetoothDeviceItem
 {
-    public enum BluetoothDeviceType
-    {BLUETOOTH_CLASSIC(0),
-        BLUETOOTH_BLE(1);
-        BluetoothDeviceType(int i)
-        {
-            this.type = i;
-        }
-        private int type;
-        public int getNumericType()
-        {
-            return type;
-        }
-    };
     private String Name;
     private String Address;
     private int Image;
-    private BluetoothDeviceType BluetoothType = BluetoothDeviceType.BLUETOOTH_CLASSIC;
+    private PD210SmartDeviceBluetooth.BluetoothDeviceType BluetoothType = PD210SmartDeviceBluetooth.BluetoothDeviceType.BLUETOOTH_CLASSIC;
 
 
     private BluetoothDevice Device;
@@ -81,8 +70,8 @@ public class MTEBluetoothDeviceItem
     }
     //##############################################################################################################
 
-    public BluetoothDeviceType getBluetoothType(){return BluetoothType;}
-    public void setBluetoothType(BluetoothDeviceType type){BluetoothType = type;}
+    public PD210SmartDeviceBluetooth.BluetoothDeviceType getBluetoothType(){return BluetoothType;}
+    public void setBluetoothType(PD210SmartDeviceBluetooth.BluetoothDeviceType type){BluetoothType = type;}
     //##############################################################################################################
 
 }

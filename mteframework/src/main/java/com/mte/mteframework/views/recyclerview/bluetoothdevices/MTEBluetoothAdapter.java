@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mte.mteframework.Debug.MTEDebugLogger;
+import com.mte.mteframework.Devices.pd210.bluetooth.PD210SmartDeviceBluetooth;
 import com.mte.mteframework.R;
 import com.mte.mteframework.views.recyclerview.typeA.ListAdapaterTypeA;
 import com.mte.mteframework.views.recyclerview.typeA.ListItemsTypeA;
@@ -97,7 +98,7 @@ public class MTEBluetoothAdapter extends RecyclerView.Adapter<MTEBluetoothAdapte
         holder.dev_img.setImageResource(mData.get(position).getImage());
         holder.dev_name.setText(mData.get(position).getName());
         holder.dev_address.setText(mData.get(position).getAddress());
-        if(mData.get(position).getBluetoothType() == MTEBluetoothDeviceItem.BluetoothDeviceType.BLUETOOTH_CLASSIC)
+        if(mData.get(position).getBluetoothType() == PD210SmartDeviceBluetooth.BluetoothDeviceType.BLUETOOTH_CLASSIC)
         {
             //classsic
             holder.dev_type.setText("Classic Bluetooth");
