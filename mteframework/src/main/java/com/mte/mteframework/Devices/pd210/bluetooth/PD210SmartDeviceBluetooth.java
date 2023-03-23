@@ -159,9 +159,7 @@ public class PD210SmartDeviceBluetooth implements ServiceConnection, PD210SmartD
         DeviceName = devName;
         DeviceAddress = deviceAddress;
         DeviceImg = deviceImg;
-
         deviceItem = deviceitem;
-
         timeoutHandler.setListener(this);
 
     }

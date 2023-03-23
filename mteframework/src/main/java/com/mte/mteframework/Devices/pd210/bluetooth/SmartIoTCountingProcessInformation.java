@@ -18,7 +18,7 @@ public class SmartIoTCountingProcessInformation
     public short TareId;
     public byte[] TareCode = new byte[14];
     public byte[] PartCode= new byte[14];
-    public char Decimals;
+    public int Decimals;
     public int Platform;
     public byte[] DisplayStr = new byte[8];
 
@@ -51,7 +51,7 @@ public class SmartIoTCountingProcessInformation
             System.arraycopy(data,32,TareCode,0,14);
             //PartCode = bdata.getFloat(4);
             System.arraycopy(data,46,PartCode,0,14);
-            Decimals = bdata.getChar(60);
+            Decimals = (int)bdata.getChar(60);
             Platform = (int)bdata.getChar(61);
             System.arraycopy(data,62,DisplayStr,0,8);
 
