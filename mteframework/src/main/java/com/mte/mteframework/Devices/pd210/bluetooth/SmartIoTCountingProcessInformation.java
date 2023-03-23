@@ -51,8 +51,8 @@ public class SmartIoTCountingProcessInformation
             System.arraycopy(data,32,TareCode,0,14);
             //PartCode = bdata.getFloat(4);
             System.arraycopy(data,46,PartCode,0,14);
-            Decimals = (int)bdata.get(60);
-            Platform = (int)bdata.get(61);
+            Decimals =  (int)(((byte)(bdata.get(60)))&0xff);
+            Platform = (int)(((byte)(bdata.get(61)))&0xff);
             System.arraycopy(data,62,DisplayStr,0,8);
 
 
