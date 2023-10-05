@@ -38,7 +38,7 @@ public class AESEncrypter
                 //============================================================================================
                 //============================================================================================
                 //Check Encrypted PassPhrase
-                encryptedPassPhrase = AESEncrypt(passPhrase, applicationCypherKey);
+                encryptedPassPhrase = AESEncrypt(passPhrase, applicationCypherKey.substring(0,32));
 
                 if(encryptedPassPhrase.length()>=32)
                 {
@@ -91,7 +91,7 @@ public class AESEncrypter
                 //============================================================================================
                 //============================================================================================
                 //Check Encrypted PassPhrase
-                encryptedPassPhrase = AESEncrypt(passPhrase, applicationCypherKey);
+                encryptedPassPhrase = AESEncrypt(passPhrase, applicationCypherKey.substring(0,32));
 
                 if(encryptedPassPhrase.length()>=32)
                 {
