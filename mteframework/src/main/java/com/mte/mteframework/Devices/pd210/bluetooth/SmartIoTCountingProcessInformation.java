@@ -22,6 +22,8 @@ public class SmartIoTCountingProcessInformation
     public int Platform;
     public byte[] DisplayStr = new byte[8];
 
+    public int DisplayUnits;
+
     //#############################################################################################################
     public SmartIoTCountingProcessInformation()
     {}
@@ -54,7 +56,7 @@ public class SmartIoTCountingProcessInformation
             Decimals =  (int)(((byte)(bdata.get(60)))&0xff);
             Platform = (int)(((byte)(bdata.get(61)))&0xff);
             System.arraycopy(data,62,DisplayStr,0,8);
-
+            DisplayUnits = (int)(((byte)(bdata.get(70)))&0xff);
 
 
         }
