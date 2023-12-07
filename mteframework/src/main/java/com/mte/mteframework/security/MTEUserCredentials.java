@@ -23,7 +23,7 @@ public class MTEUserCredentials implements Parcelable
     public MTEUserCredentials()
     {
         this.Username = "Undefined";
-        this.Password = "null";
+        this.Password = "None";
         this.Email="user@domain.com";
         this.LoggedIn = false;
         this.IsNewUser =false;
