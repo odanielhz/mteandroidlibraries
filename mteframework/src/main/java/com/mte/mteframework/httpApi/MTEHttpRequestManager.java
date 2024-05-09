@@ -28,6 +28,11 @@ public class MTEHttpRequestManager
     MTEHttpRequestEvent listener;
     //==========================================================================================================================
     //==========================================================================================================================
+    String urlApiServer="";
+
+
+    //==========================================================================================================================
+    //==========================================================================================================================
     public MTEHttpRequestManager(Context context)
     {
         //initialize a new volley request
@@ -45,13 +50,24 @@ public class MTEHttpRequestManager
     }
     //==========================================================================================================================
     //==========================================================================================================================
+    public MTEHttpRequestManager(Context context, String urlapiserver ,MTEHttpRequestEvent eventlistener)
+    {
+        //initialize a new volley request
+        requestQueue = Volley.newRequestQueue(context);
+        mContext = context;
+        listener = eventlistener;
+        urlApiServer=urlapiserver;
+    }
+    //==========================================================================================================================
+    //==========================================================================================================================
     public void setEventListener(MTEHttpRequestEvent eventListener)
     {
         listener = eventListener;
     }
+
     //==========================================================================================================================
     //==========================================================================================================================
-    public void makePostRequest(int RequestId,String api_url, JSONObject jsonbody)
+    private void postRequest(int RequestId,String api_url, JSONObject jsonbody)
     {
         try
         {
@@ -153,6 +169,19 @@ public class MTEHttpRequestManager
                 listener.onRequestResponseFailed(RequestId, "onException. "+ex.toString());
             }
         }
+    }
+    //==========================================================================================================================
+    //==========================================================================================================================
+    public void makePostRequest(int RequestId,String api_url, JSONObject jsonbody)
+    {
+       postRequest(RequestId,api_url,jsonbody);
+    }
+
+    //==========================================================================================================================
+    //==========================================================================================================================
+    public void makePostRequest(int RequestId,String urlserver,String endpoint, JSONObject jsonbody)
+    {
+        postRequest(RequestId,urlserver+endpoint,jsonbody);
     }
 
 
