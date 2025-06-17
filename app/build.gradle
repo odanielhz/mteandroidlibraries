@@ -1,17 +1,18 @@
 plugins {
     id 'com.android.application'
-    id 'maven-publish' // Add this line
+
 }
 
 android {
-    compileSdk 35
+    namespace 'com.mte.mteframework' // Replace with your desired namespace
+    compileSdk 34 // Example: ensure you have compileSdk defined
 
     defaultConfig {
-        applicationId "com.mte.libraries"
-        minSdk 24
+        applicationId "com.mte.mteframework" // This can be the same as namespace for app modules
+        minSdk 21
         targetSdk 34
-        versionCode 2
-        versionName "2.0.13"
+        versionCode 1
+        versionName "2.0.16"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -48,35 +49,4 @@ dependencies {
 
     implementation 'com.android.volley:volley:1.2.1'
 
-}
-
-// Add this publishing block
-afterEvaluate {
-    publishing {
-        publications {
-            // The name of this publication (e.g., "release") doesn't strictly matter for JitPack
-            // but it's good practice.
-            // JitPack will use the group, artifactId, and version you define.
-            release(MavenPublication) {
-                // The from components.release part tells the plugin to publish
-                // the release build variant of your Android library.
-                from components.release // Or components.debug if you want to publish debug
-
-                // JitPack will automatically use:
-                // group = com.github.YOUR_USERNAME (e.g., com.github.odanielhz)
-                // artifact = YOUR_REPOSITORY_NAME (e.g., mteframeworklib)
-                // version = YOUR_GIT_TAG_OR_COMMIT (e.g., 2.0.13)
-
-                // You can explicitly set them if needed, but JitPack usually overrides them.
-                // groupId = 'com.github.odanielhz'
-                // artifactId = 'mteframework' // Or your specific library module name
-                // version = '2.0.13' // This will be overridden by the Git tag
-            }
-        }
-        repositories {
-            // You don't strictly need a repository block here for JitPack,
-            // as JitPack handles the deployment.
-            // mavenLocal() // Can be useful for local testing before pushing to JitPack
-        }
-    }
 }
