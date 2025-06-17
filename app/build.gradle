@@ -33,16 +33,6 @@ android {
     }
     ndkVersion '23.0.7344513 rc4'
     buildToolsVersion '30.0.3'
-    namespace 'com.mte.libraries'
-
-    // Important for JitPack to pick up sources and Javadoc
-    // Important for JitPack to pick up sources and Javadoc
-    publishing {
-        singleVariant("release") { // Or "debug" or another specific variant
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
 }
 
 dependencies {
