@@ -1,13 +1,14 @@
 plugins {
     id 'com.android.library'
+    id 'maven-publish' // Add this line
 }
 
 android {
-    compileSdk 31
+    compileSdk 34
 
     defaultConfig {
-        minSdk 21
-        targetSdk 31
+        minSdk 24
+        targetSdk 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -23,6 +24,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.mte.mteframework'
 }
 
 dependencies {
