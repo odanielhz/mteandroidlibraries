@@ -37,6 +37,7 @@ public class MTEHttpRequestManager
     {
         //initialize a new volley request
         requestQueue = Volley.newRequestQueue(context);
+
         mContext = context;
     }
     //==========================================================================================================================
