@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "mteframeworklib"
-include ':app'
+//include ':app'
 include ':mteframework'
