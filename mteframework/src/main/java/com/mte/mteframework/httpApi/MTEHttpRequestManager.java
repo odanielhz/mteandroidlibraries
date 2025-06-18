@@ -78,7 +78,7 @@ public class MTEHttpRequestManager
                         @Override
                         public void onResponse(String response)
                         {
-
+                            // Nothing
                         }
                     },
                     new Response.ErrorListener()
